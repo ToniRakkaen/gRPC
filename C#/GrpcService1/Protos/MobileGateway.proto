@@ -1,0 +1,451 @@
+﻿syntax = "proto3";
+option csharp_namespace = "Gosu.MobileGateway.Services";
+import "google/protobuf/timestamp.proto";
+package grpcMobileGatewayService;
+//Services
+
+service grpcMobileGatewayService{
+    // Health check
+    rpc HealthCheck (Empty_Request) returns (String_Response);
+
+    //For refresh: config, caching,..
+    rpc SubcribeEvents (SubcribeEvents_Request) returns (Empty_Response);
+    //
+    rpc Register (Register_Request)returns (Register_Response);
+    //
+    rpc ActiveAccount (ActiveAccount_Request)returns (ActiveAccount_Response);
+    rpc Login (Login_Request) returns (Login_Response);    
+    rpc Logout (Logout_Request) returns (Empty_Response);
+    rpc LoginByAccessToken (LoginByAccessToken_Request) returns (LoginByAccessToken_Response);
+    rpc LinkAccount (LinkAccount_Request) returns (LinkAccount_Response);
+    rpc RecoveryPasswordRequest (RecoveryPasswordRequest_Request) returns (RecoveryPasswordRequest_Response);
+    rpc RecoveryPasswordSubmit (RecoveryPasswordSubmit_Request) returns (Empty_Response);    
+    rpc OpenGameLog (OpenGameLog_Request) returns (Empty_Response);        
+    rpc InstallGameLog (InstallGameLog_Request) returns (Empty_Response);  
+    rpc GetProfile (GetProfile_Request) returns (GetProfile_Response);        
+    //rpc ResendOTP (ResendOTP_Request)returns (Empty_Response);
+    rpc SdkInit (SdkInit_Request) returns (SdkInit_Response);
+    rpc ResendOTP (ResendOTP_Request)returns (ResendOTP_Response);
+    rpc RequestActive(RequestActive_Request)returns (RequestActive_Response);
+    //
+    rpc IAPInit (IAPInit_Request) returns (IAPInit_Response);
+    rpc FinalizeIAP (FinalizeIAP_Request) returns (Empty_Response);
+    //
+    rpc DeleteAccount(DeleteAccount_Request) returns (Empty_Response);
+}
+//======================================================
+// Common Messages
+//======================================================
+message SubcribeEvents_Request {
+    UserCredential Credential = 1;
+    //
+    string EventName = 2;
+    string JsonStringData = 3;
+}
+message UserCredential {
+    string Username = 1;
+    int32 RoleID = 2;
+    string AccessToken = 3;
+    string ApiKey = 4;
+}
+message Empty_Response {
+    int32 ReturnCode = 1;
+    string MsgCode = 2;
+}
+message String_Response {
+    int32 ReturnCode = 1;
+    string MsgCode = 2;
+    //
+    string StringValue = 3;
+}
+message Empty_Request {
+    UserCredential Credential = 1;
+}
+message String_Request
+{
+    UserCredential Credential = 1;
+    //
+     string StringValue = 2;
+}
+//======================================================
+// Messages
+//======================================================
+message Login_Request {
+    UserCredential Credential = 1;
+    //
+    string UserName = 2;
+    string Password = 3;
+    //
+    string ClientID = 4;
+    string DeviceID = 5;
+    string GameID = 6;
+    string SdkSignature = 7;
+    string SecurityCode = 8; 
+    string Signature = 9; 
+    string DeviceBrand = 10;
+}
+message Login_Response {
+    int32 ReturnCode = 1;
+    string MsgCode = 2;
+    //
+   string AccessToken = 3;
+}
+//
+message Register_Request{
+    UserCredential Credential = 1;
+    //
+    string OpenIDPartner = 2;
+    string UserName = 3;
+    string Password = 4;
+    string Email = 5;
+    string ClientID = 6;
+    string DeviceID = 7;
+    string GameID = 8;
+    string SdkSignature = 9;
+    string AccountType = 10;
+    string SecurityCode = 11;
+    string AppToken = 12;
+    string Signature = 13;
+    string OpenIDToken = 14;
+    string DeviceBrand = 15;
+}
+//
+message Register_Response{
+    int32 ReturnCode = 1;
+    string MsgCode = 2;
+    //
+    string TransactionID = 3;
+    string AccessToken = 4;
+}
+//
+message ActiveAccount_Request {
+    UserCredential Credential = 1;
+    //
+    string UserName = 2;
+    string DeviceID = 3;
+    string GameID = 4;
+    string ActiveCode = 5;
+    string TransactionID = 6; 
+    string ClientID = 7;
+    string Signature = 8;
+    string DeviceBrand = 9;
+}
+//
+message ActiveAccount_Response{
+    int32 ReturnCode = 1;
+    string MsgCode = 2;
+    //
+    string AccessToken = 3;
+}
+//
+message Logout_Request
+{
+    UserCredential Credential = 1;
+    //
+    string AccessToken = 2;
+    string ClientID = 3;
+    string DeviceID = 4;
+    string UserName = 5;
+    string Signature = 6;
+}
+
+message LoginByAccessToken_Request
+{   
+    UserCredential Credential = 1;
+    //
+    string AccessToken = 2;
+    string ClientID = 3;
+    string DeviceID = 4;
+    string UserName = 5;
+    string Signature = 6;
+}
+message LoginByAccessToken_Response {
+    int32 ReturnCode = 1;
+    string MsgCode = 2;
+    //
+    string RefreshAccessToken = 3;
+}
+
+message LinkAccount_Request
+{
+    UserCredential Credential = 1;
+    //
+    string OldAccount = 2;
+    string NewAccount = 3;
+    string Password = 4;
+    string Email = 5;
+    string AccessToken = 6;
+    string GameID = 7;
+    string DeviceID = 8;
+    string ClientID = 9;
+    string Signature = 10;
+}
+message LinkAccount_Response
+{
+    int32 ReturnCode = 1;
+    string MsgCode = 2;
+    //
+    string TransactionID = 3;
+}
+//
+message RecoveryPasswordRequest_Request
+{
+    UserCredential Credential = 1;
+    //
+    string UserName = 2;
+    string ClientID = 3;
+    string DeviceID = 4;
+    string GameID = 5;
+    string ApkSignature = 6;
+    string NewPassword = 7;
+    string AppToken = 8;
+    int32 ChangeBy = 9;
+    string Signature = 10;
+}
+message RecoveryPasswordRequest_Response
+{
+    int32 ReturnCode = 1;
+    string MsgCode = 2;
+    //
+    string TransactionID = 3;
+    string OTP = 4;
+    string Email = 5;
+    string PhoneNumber = 6;
+}
+message RecoveryPasswordSubmit_Request
+{
+    UserCredential Credential = 1;
+    //
+    string UserName = 2;
+    string OTP = 3;
+    string TransactionID = 4;
+    string ClientID = 5;
+    string DeviceID = 6;
+    string Signature = 7;
+}
+//
+message OpenGameLog_Request
+{
+    UserCredential Credential = 1;
+    //
+    string UserName = 2;
+    string ClientID = 3;
+    string SdkVersion = 4;
+    string DeviceID = 5;
+    string GameID = 6;
+    string GameVersion = 7;
+    string AppToken = 8;
+    string Platform = 9;
+    string PlatformVersion = 10;
+    string DeviceBrand =11;
+    string DeviceModel = 12;
+    string MACAddress = 13;
+    string ExtraInfo = 14;
+    string ServerID = 15;
+    string CharacterID = 16;
+    string NationalID = 17;
+    string CustomerID = 18;
+    string Adsid = 19;
+    string ExtraInfo1 = 20;
+    string ExtraInfo2 = 21;
+    string ExtraInfo3 = 22;
+}
+message GetProfile_Request
+{
+    UserCredential Credential = 1;
+    //
+    string UserName = 2;
+    string AccessToken = 3;
+    string ClientID = 4;
+    string DeviceID = 5;
+    string Signature = 6;
+}
+message GetProfile_Response 
+{
+    int32 ReturnCode = 1;
+    string MsgCode = 2;
+    //
+    int32 IsGuest = 3;
+    int32 IsOpenID = 4;
+    string OpenIDPartner = 5;
+    int32 Status = 6;
+    int32 EmailStatus = 7;
+    int32 PhoneStatus = 8;
+    int32 RoleID = 9;
+    string CustomerId = 10;
+    string UserName = 11;
+    string NationalCode = 12;
+    string PhoneNumber = 13;
+    string Fullname = 14;
+    string Email = 15;
+    string Address = 16;
+    string NumberId = 17;
+    google.protobuf.Timestamp IssueDate = 18;
+    string IssuePlace = 19;
+    string NationalID = 20;
+    string CityID = 21;    
+    google.protobuf.Timestamp Birthday = 22;
+    string Gender = 23;
+}
+//
+message SdkInit_Request
+{
+    UserCredential Credential = 1;
+    //
+    string ClientID = 2;
+    string DeviceID = 3;
+    string SdkSignature = 4;
+}
+message SdkInit_Response
+{
+    int32 ReturnCode = 1;
+    string MsgCode = 2;
+    //
+    //bool IsNeedInstallLog = 3;
+    //string Data = 3;
+    string InitData = 3;
+
+}
+ message IAPInit_Request
+ {
+     UserCredential Credential = 1;
+     //
+     string ClientID = 2;
+     string UserName = 3;
+     string CustomerID = 4;
+     string NationalID = 5;
+     string CharacterID = 6;
+     string GameID = 7;
+     string ServerID = 8;
+     string CurrencyUnit = 9;
+     string ChannelID = 10;
+     string PackageName = 11;
+     string ProductID = 12;
+     string ProductName = 13;
+     string Amount = 14;
+     string Platform = 15;
+     string ExtraInfo = 16;
+     string Signature = 17;
+     string AccessToken = 18;
+     string DeviceID = 19;
+     string PartnerID = 20;
+     //mã đơn hàng phía đối tác
+     string OrderID = 21;
+ }
+
+ message IAPInit_Response
+ {
+    int32 ReturnCode = 1;
+    string MsgCode = 2;
+    //
+    repeated grpcIAPInit InitData = 3;
+ }
+ //
+ message grpcIAPInit
+ {
+     string TransactionID = 1;
+     double a = 2;
+     double b = 3;
+     string h = 4;
+     string m = 5;
+     int32 s = 6;
+     string t = 7;
+ }
+ message FinalizeIAP_Request
+ {
+    UserCredential Credential = 1;
+    //
+    string UserName = 2;
+    string ClientID = 3;
+    string OrderID = 4;
+    string OrderToken = 5;
+    string ServiceEmail = 6;
+    string ExtraInfo = 7;
+    int32 ResultCode = 8;
+    string ErrorMessage = 9;
+    string Signature = 10;
+    string AccessToken = 11;
+    string DeviceID= 12;
+    string TransactionID = 13;
+ }
+ //
+message InstallGameLog_Request
+{
+    UserCredential Credential = 1;
+    //
+    string ID  = 2; 
+    string ClientID  = 4;
+    string DeviceID  = 5;
+    string SdkVersion = 6;
+    string GameID  = 7;
+    string GameVersion = 8; 
+    string Platform = 9;
+    string DeviceBrand = 10;
+    string DeviceModel = 11;
+    string MACAddress = 12; 
+    string IP  = 13;
+    string NationalID = 14;
+    string Adsid = 15;
+    string ExtraInfo1 = 16;
+    string ExtraInfo2 = 17;
+    string ExtraInfo3 = 18;
+}
+message ResendOTP_Request
+{
+    UserCredential Credential = 1;
+    //
+    string UserName = 2;
+    string TransactionID = 3;
+    string GameID = 4;
+    string DeviceID = 5;
+    //
+    string ContentFlag = 6;
+    string AppToken = 7;
+    int32 ChangeBy = 8;
+    string ClientID = 9;
+    string Signature = 10;
+}
+//
+message ResendOTP_Response 
+{
+    int32 ReturnCode = 1;
+    string MsgCode = 2;
+    //
+    string Email = 3;
+    string PhoneNumber = 4;
+    string ContentFlag = 5;
+}
+//
+//
+message RequestActive_Request{
+    UserCredential Credential = 1;
+    //
+    string UserName = 2;
+    string ClientID  = 3;
+    string ContentFlag = 4;
+    //
+    string AppToken = 5;
+    int32 ChangeBy = 6;
+    string Email = 7;
+    string PhoneNumber  = 8;
+    string Signature = 9;
+}
+message RequestActive_Response{
+    int32 ReturnCode = 1;
+    string MsgCode = 2;
+    //
+    string ContentFlag = 3;
+    string Email  = 4;
+    string PhoneNumber  = 5;
+    string TransactionID  = 6;
+}
+//
+message DeleteAccount_Request{
+    UserCredential Credential = 1;
+    //
+    string AccessToken = 2;
+    string ClientID = 3;
+    string UserName = 4;
+    string Signature = 5;
+}
+
