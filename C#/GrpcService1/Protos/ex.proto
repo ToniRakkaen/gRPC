@@ -1,13 +1,22 @@
 syntax = "proto3";
 
-service ExampleService {
-  rpc SayHello (HelloRequest) returns (HelloResponse);
+option csharp_namespace = "GrpcService1";
+
+package ex;
+
+service ExampleRPC {
+	rpc Login (Login_Request) returns (Login_Response);
 }
 
-message HelloRequest {
-  string name = 1;
-}
 
-message HelloResponse {
-  string message = 1;
+message Login_Request {
+
+    string UserName = 1;
+    string Password = 2;
+
+}
+message Login_Response {
+        string UserName = 1;
+    string Password = 2;
+    string FullName = 3;
 }

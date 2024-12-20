@@ -19,14 +19,5 @@ namespace GrpcService1.Services
                 Fullname = "Test fullname",
             });
         }
-
-        public override Task<Login_Response> Login(Login_Request request, ServerCallContext context)
-        {
-            return Task.FromResult(new Login_Response()
-            {
-                UserName = request.UserName,
-                Fullname = "Test fullname",
-            });
-        }
     }
 }
