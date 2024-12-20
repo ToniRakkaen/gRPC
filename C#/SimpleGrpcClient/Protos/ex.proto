@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+option csharp_namespace = "GrpcService1";
+
+package ex;
+
+service ExampleRPC {
+	rpc Login (Login_Request) returns (Login_Response);
+}
+
+
+message Login_Request {
+
+    string UserName = 1;
+    string Password = 2;
+
+}
+message Login_Response {
+        string UserName = 1;
+    string Password = 2;
+    string FullName = 3;
+}
