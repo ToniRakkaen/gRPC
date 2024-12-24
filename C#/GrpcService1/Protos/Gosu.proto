@@ -6,6 +6,7 @@ package ex;
 
 service ExampleRPC {
 	rpc Login (Login_Request) returns (Login_Response);
+    rpc GetCards(Cards_Request) returns (Cards_Response);
 }
 
 
@@ -19,4 +20,12 @@ message Login_Response {
         string UserName = 1;
     string Password = 2;
     string FullName = 3;
+}
+
+message Cards_Request {
+
+}
+
+message Cards_Response {
+    string 
 }
