@@ -31,6 +31,19 @@ namespace SimpleGrpcClient.Services
 
             var grpcChannel = GrpcChannel.ForAddress(utilityService.GetServerAddress());
             var gosuClient = new grpcMobileGatewayService.grpcMobileGatewayServiceClient(grpcChannel);
+
+            Console.WriteLine("User name: " + username);
+
+            Console.WriteLine("Pass: " + hashedPassword);
+
+            Console.WriteLine("ClientID: " + clientId);
+            Console.WriteLine("Device branch: " + deviceBranch);
+            Console.WriteLine("Device ID: " + deviceId);
+            Console.WriteLine("");
+            Console.WriteLine("");
+            Console.WriteLine("Security code: " + securityCode);
+            Console.WriteLine("Signature: " + signature);
+
             return gosuClient.Login(new Login_Request
             {
                 UserName = username,
